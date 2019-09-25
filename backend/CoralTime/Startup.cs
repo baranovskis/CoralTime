@@ -48,6 +48,7 @@ using IdentityServer4.Test;
 using Microsoft.IdentityModel.Tokens;
 using static CoralTime.Common.Constants.Constants.Routes.OData;
 using Microsoft.IdentityModel.Logging;
+using System.Runtime.InteropServices;
 
 namespace CoralTime
 {
@@ -182,7 +183,10 @@ namespace CoralTime
 
             Constants.EnvName = env.EnvironmentName;
 
-            CombineFileWkhtmltopdf(env);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                CombineFileWkhtmltopdf(env);
+            }
 
             AppDbContext.InitializeFirstTimeDataBaseAsync(app.ApplicationServices, Configuration).Wait();
         }
