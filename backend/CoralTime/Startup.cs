@@ -297,7 +297,10 @@ namespace CoralTime
             {
                 var cert = new X509Certificate2(Path.Combine(Environment.CurrentDirectory, Configuration["Certificate:FileName"]), Configuration["Certificate:Password"], X509KeyStorageFlags.MachineKeySet);
 
-                services.AddIdentityServer()
+                services.AddIdentityServer(options =>
+                    {
+                        options.IssuerUri = Configuration["Issuer"];
+                    })
                     .AddInMemoryIdentityResources(Config.GetIdentityResources())
                     .AddInMemoryApiResources(Config.GetApiResources())
                     .AddInMemoryClients(Config.GetClients(accessTokenLifetime: accessTokenLifetime, refreshTokenLifetime: refreshTokenLifetime, slidingRefreshTokenLifetime: slidingRefreshTokenLifetime))
@@ -325,7 +328,6 @@ namespace CoralTime
                     // name of the API resource
                     options.Audience = "WebAPI";
                     options.Authority = Configuration["Authority"];
-                    options.ClaimsIssuer = Configuration["Issuer"];
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
