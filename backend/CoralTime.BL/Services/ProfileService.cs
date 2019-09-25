@@ -168,6 +168,7 @@ namespace CoralTime.BL.Services
             memberByName.TimeFormat = memberPreferencesView.TimeFormat;
             memberByName.WeekStart = (WeekStart)memberPreferencesView.WeekStart;
             memberByName.IsWeeklyTimeEntryUpdatesSend = memberPreferencesView.IsWeeklyTimeEntryUpdatesSend;
+            memberByName.BearerToken = memberPreferencesView.BearerToken;
 
             Uow.MemberRepository.Update(memberByName);
             Uow.Save();

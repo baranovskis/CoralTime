@@ -58,6 +58,7 @@ namespace CoralTime.DAL.ConvertModelToView
             reportItemsView.MemberId = timeEntry.Member.Id;
             reportItemsView.TaskId = timeEntry.TaskType.Id;
             reportItemsView.TaskName = timeEntry.TaskType.Name;
+            reportItemsView.IssueId = reportItemsView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowIssue) ? timeEntry.IssueId ?? string.Empty : null;
 
             reportItemsView.ClientName = reportItemsView.GroupByTypeId == (int)ReportsGroupByIds.Client
                 ? null
@@ -211,6 +212,7 @@ namespace CoralTime.DAL.ConvertModelToView
             reportTotalView.DisplayNames.DisplayNameTimeFrom = reportTotalView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowStartFinish) ? reportTotalView.DisplayNames.DisplayNameTimeFrom : null;
             reportTotalView.DisplayNames.DisplayNameTimeTo = reportTotalView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowStartFinish) ? reportTotalView.DisplayNames.DisplayNameTimeTo : null;
             reportTotalView.DisplayNames.DisplayNameTimeEstimated = reportTotalView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowEstimatedTime) ? reportTotalView.DisplayNames.DisplayNameTimeEstimated : null;
+            reportTotalView.DisplayNames.DisplayNameIssue = reportTotalView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowIssue) ? reportTotalView.DisplayNames.DisplayNameIssue : null;
         }
     }
 }

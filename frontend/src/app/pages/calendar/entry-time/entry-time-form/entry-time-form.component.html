@@ -22,14 +22,33 @@
     <div class="ct-task">
         <div class="ct-task-name">
             <div class="ct-required-field-container">
-                <ct-select [name]="'task'" [class.ct-archived]="isArchivedTaskShown()"
-                           [defaultValue]="!isArchivedTaskShown() ? timeEntry.taskName : timeEntry.taskName + ' (archived)'"
-                           [displayName]="'name'" [trackBy]="'id'"
-                           [maxHeight]="formHeight - 149"
-                           [(ngModel)]="taskModel"
-                           (ngModelChange)="taskOnChange(taskModel)"
-                           [required]="!currentTimeEntry.id"
-                           [options]="taskList">
+                <ct-select [name]="'task'" 
+                            [class.ct-archived]="isArchivedTaskShown()"
+                            [defaultValue]="!isArchivedTaskShown() ? timeEntry.taskName : timeEntry.taskName + ' (archived)'"
+                            [displayName]="'name'" 
+                            [trackBy]="'id'"
+                            [maxHeight]="formHeight - 149"
+                            [(ngModel)]="taskModel"
+                            (ngModelChange)="taskOnChange(taskModel)"
+                            [required]="!currentTimeEntry.id"
+                            [disabled]="!projectModel"
+                            [options]="taskList">
+                </ct-select>
+            </div>
+        </div>
+        <!-- Test -->
+        <div *ngIf="isIssuesLoaded" class="ct-task-issue">
+            <div class="ct-required-field-container">
+                <ct-select [name]="'issue'" 
+                            [class.ct-archived]="isArchivedTaskShown()"
+                            [defaultValue]="timeEntry.issueName"
+                            [displayName]="'display'"
+                            [trackBy]="'id'"
+                            [maxHeight]="formHeight - 149"
+                            [(ngModel)]="issueModel"
+                            (ngModelChange)="issueOnChange(issueModel)"
+                            [required]="!currentTimeEntry.id"
+                            [options]="issueList">
                 </ct-select>
             </div>
         </div>
@@ -39,6 +58,7 @@
                      [maxlength]="1000"
                      [canResize]="true"
                      [(ngModel)]="currentTimeEntry.description"
+                     [disabled]="!projectModel"
                      (ngModelChange)="descriptionOnChange()"></ct-textarea>
     </div>
     <div class="ct-time-actions clearfix">

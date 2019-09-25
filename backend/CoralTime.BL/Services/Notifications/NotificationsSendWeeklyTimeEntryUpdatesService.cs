@@ -110,7 +110,7 @@ namespace CoralTime.BL.Services
                                     DateFrom = lastWorkWeekFirstDay,
                                     DateTo  = lastWorkWeekLastDay,
                                     GroupById = (int) Constants.ReportsGroupByIds.Project,
-                                    ShowColumnIds = new[] { 1, 2, 3, 4 }
+                                    ShowColumnIds = new[] { 1, 2, 3, 4, 5 }
                                 }
                             };
 

@@ -35,5 +35,7 @@ namespace CoralTime.ViewModels.Reports
         public TimeValuesView TimeValues { get; set; }
 
         public string Notes { get; set; }
+
+        public string IssueId { get; set; }
     }
 }

@@ -34,6 +34,8 @@ namespace CoralTime.DAL
 
         public DbSet<PersistedGrant> PersistedGrants { get; set; }
 
+        public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+
         public DbSet<ReportsSettings> ReportsSettings { get; set; }
 
         public Task<int> SaveChangesAsync()
@@ -108,6 +110,9 @@ namespace CoralTime.DAL
 
             builder.Entity<PersistedGrant>()
                 .HasKey(p => p.Key);
+
+            builder.Entity<DeviceFlowCodes>()
+                .HasKey(p => p.DeviceCode);
 
             builder.Entity<ReportsSettings>()
                 .HasIndex(t => new { ReportsSettingsId = t.MemberId, t.QueryName }).IsUnique();

@@ -27,7 +27,7 @@ export class ReportFilters {
 		this.projectIds = obj.projectIds || [];
 		this.queryId = obj.queryId;
 		this.queryName = obj.queryName;
-		this.showColumnIds = obj.showColumnIds || [1, 2, 3, 4];
+		this.showColumnIds = obj.showColumnIds || [1, 2, 3, 4, 5];
 	}
 }
 
@@ -111,6 +111,7 @@ export interface ReportItem {
 	taskId: number;
 	taskName: string;
 	timeValues: TimeValues;
+	issueId: string;
 }
 
 export interface DateStatic {

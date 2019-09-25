@@ -7,16 +7,24 @@ using CoralTime.DAL.ConvertModelToView;
 using CoralTime.DAL.Models;
 using CoralTime.DAL.Repositories;
 using CoralTime.ViewModels.TimeEntries;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using YouTrackSharp;
+using YouTrackSharp.TimeTracking;
 
 namespace CoralTime.BL.Services
 {
     public class TimeEntryService : BaseService, ITimeEntryService
     {
-        public TimeEntryService(UnitOfWork uow, IMapper mapper)
-            : base(uow, mapper) { }
+        private readonly IIssuesService _issuesService;
+
+        public TimeEntryService(UnitOfWork uow, IMapper mapper, IIssuesService issuesService)
+            : base(uow, mapper)
+        {
+            _issuesService = issuesService;
+        }
 
         public IEnumerable<TimeEntryView> GetAllTimeEntries(DateTimeOffset dateStart, DateTimeOffset dateEnd)
         {
@@ -148,6 +156,15 @@ namespace CoralTime.BL.Services
             // Check Lock TimeEntries: User cannot Create TimeEntry, if enable Lock TimeEntry in Project settings.  
             var isOnlyMemberAtProject = !IsAdminOrManagerOfProject(ApplicationUserCurrent.IsAdmin, relatedMemberByName.Id, relatedProjectById.Id);
             CheckLockTimeEntryByProjectSettings(timeEntryView.Date, relatedProjectById, isOnlyMemberAtProject);
+
+            #region Delete work item from YouTrack.
+
+            if (!string.IsNullOrEmpty(timeEntryById.WorkItemId))
+            {
+                _issuesService.DeleteIssue(timeEntryById);
+            }
+
+            #endregion
 
             #region Delete TimeEntry from DB.
 
@@ -303,7 +320,7 @@ namespace CoralTime.BL.Services
                 totalTimeForDay = totalTimeForDay + newTime;
             }
 
-            if (totalTimeForDay > Constants.SecondsInThisDay)
+            if (totalTimeForDay > Common.Constants.Constants.SecondsInThisDay)
             {
                 throw new CoralTimeDangerException($"Total work time on the date {timeEntryView.Date} is greater than 24 hours");
             }
@@ -403,7 +420,7 @@ namespace CoralTime.BL.Services
 
         #region Added Methods for update values in Create/Update methods.
 
-        private static void UpdateValuesForTimeEntry(TimeEntry timeEntry, TimeEntryView timeEntryView)
+        private void UpdateValuesForTimeEntry(TimeEntry timeEntry, TimeEntryView timeEntryView)
         {
             #region #1. Update related entites. 
 
@@ -425,6 +442,17 @@ namespace CoralTime.BL.Services
 
             timeEntry.Description = timeEntryView.Description;
             timeEntry.IsFromToShow = timeEntryView.TimeOptions.IsFromToShow;
+
+            timeEntry.IssueId = timeEntryView.IssueId;
+
+            #endregion
+
+            #region #3. Create / update work item.
+
+            if (!string.IsNullOrEmpty(timeEntry.IssueId))
+            {
+                _issuesService.UpdateIssue(timeEntry, timeEntryView.TimeValues.TimeActual);
+            }
 
             #endregion
         }

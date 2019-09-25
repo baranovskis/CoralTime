@@ -17,5 +17,7 @@
         int WeekStart { get; set; }
 
         bool IsWeeklyTimeEntryUpdatesSend { get; set; }
+
+        string BearerToken { get; set; }
     }
 }

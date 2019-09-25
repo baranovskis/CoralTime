@@ -1,14 +1,14 @@
 ﻿{
-  "AddTasks": true,
+  "AddTasks": false,
   "AddAdmins": true,
-  "AddMembers": true,
-  "AddClients": true,
-  "AddProjects": true,
+  "AddMembers": false,
+  "AddClients": false,
+  "AddProjects": false,
 
-  "AddXRefProjectsClients": true,
-  "AddXRefMemberProjectRoles": true,
-  "AddXRefTimeEntries": true,
-  
+  "AddXRefProjectsClients": false,
+  "AddXRefMemberProjectRoles": false,
+  "AddXRefTimeEntries": false,
+
   "Settings": {
     "Name": "DefaulProjectRoleId",
     "Value": ""
@@ -38,7 +38,7 @@
       {
         "UserName": "admin",
         "FullName": "Dean, James",
-        "Password": "password",
+        "Password": "4@Q7W7zR3d6dE82kZ!",
         "Email": "CoralTime.admin@mail.com",
         "IsActive": "true"
       }

@@ -17,6 +17,7 @@ namespace CoralTime.ViewModels.Reports
             DisplayNameTimeEstimated = "Est. Hours";
             DisplayNameTask = "Task";
             DisplayNameNotes = "Notes";
+            DisplayNameIssue = "Issue";
         }
 
         [JsonIgnore] public string DisplayNameDate { get; set; }
@@ -31,5 +32,7 @@ namespace CoralTime.ViewModels.Reports
 
         [JsonIgnore] public string DisplayNameTask { get; set; }
         [JsonIgnore] public string DisplayNameNotes { get; set; }
+
+        [JsonIgnore] public string DisplayNameIssue { get; set; }
     }
 }

@@ -442,7 +442,7 @@ namespace CoralTime.DAL
                     await DbContext.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //todo log
             }

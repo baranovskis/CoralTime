@@ -17,7 +17,8 @@ namespace CoralTime.DAL.ConvertModelToView
                     (int) Constants.ShowColumnModelIds.ShowEstimatedTime,
                     (int) Constants.ShowColumnModelIds.ShowDate,
                     (int) Constants.ShowColumnModelIds.ShowNotes,
-                    (int) Constants.ShowColumnModelIds.ShowStartFinish
+                    (int) Constants.ShowColumnModelIds.ShowStartFinish,
+                    (int) Constants.ShowColumnModelIds.ShowIssue
                 };
 
             return reportsSettingsView;

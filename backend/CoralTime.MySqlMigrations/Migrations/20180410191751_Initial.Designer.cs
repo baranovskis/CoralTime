@@ -152,6 +152,8 @@ namespace CoralTime.MySqlMigrations.Migrations
 
                     b.Property<int>("WeekStart");
 
+                    b.Property<string>("BearerToken");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -274,6 +276,8 @@ namespace CoralTime.MySqlMigrations.Migrations
                         .HasMaxLength(200);
 
                     b.Property<int>("NotificationDay");
+
+                    b.Property<int>("IsYouTrack");
 
                     b.HasKey("Id");
 
@@ -438,6 +442,10 @@ namespace CoralTime.MySqlMigrations.Migrations
                     b.Property<int>("TimeTimerStart");
 
                     b.Property<int>("TimeTo");
+
+                    b.Property<string>("IssueId");
+
+                    b.Property<string>("WorkItemId");
 
                     b.HasKey("Id");
 

@@ -43,5 +43,7 @@ namespace CoralTime.DAL.Models
         public bool IsWeeklyTimeEntryUpdatesSend { get; set; }
 
         public int? SendEmailDays { get; set; }
+
+        public string BearerToken { get; set; }
     }
 }

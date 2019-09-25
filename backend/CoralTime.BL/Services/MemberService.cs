@@ -13,6 +13,7 @@ using CoralTime.ViewModels.Member;
 using CoralTime.ViewModels.Projects;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using System;
 using System.Collections.Generic;
@@ -29,14 +30,16 @@ namespace CoralTime.BL.Services
         private readonly IConfiguration _configuration;
         private readonly bool _isDemo;
         private readonly IImageService _avatarService;
+        private readonly ILogger<MemberService> _logger;
 
-        public MemberService(UnitOfWork uow, UserManager<ApplicationUser> userManager, IConfiguration configuration, IMapper mapper, IImageService avatarService)
+        public MemberService(UnitOfWork uow, UserManager<ApplicationUser> userManager, IConfiguration configuration, IMapper mapper, IImageService avatarService, ILogger<MemberService> logger)
             : base(uow, mapper)
         {
             _userManager = userManager;
             _configuration = configuration;
             _isDemo = bool.Parse(_configuration["DemoSiteMode"]);
             _avatarService = avatarService;
+            _logger = logger;
         }
 
         public IEnumerable<MemberView> GetAllMembers()
@@ -219,7 +222,7 @@ namespace CoralTime.BL.Services
                 var newUserName = memberView.UserName;
                 var newIsActive = memberView.IsActive;
                 var newIsAdmin = memberView.IsAdmin;
-                
+
                 if (member.User.Email != newEmail || member.User.UserName != newUserName || member.User.IsActive != newIsActive || member.User.IsAdmin != newIsAdmin)
                 {
                     member.User.Email = newEmail;
@@ -254,6 +257,7 @@ namespace CoralTime.BL.Services
                         }
                         catch (Exception e)
                         {
+                            Uow.MemberRepository.LinkedCacheClear();
                             throw new CoralTimeDangerException("An error occurred while updating member", e);
                         }
                     }
@@ -267,39 +271,39 @@ namespace CoralTime.BL.Services
                     }
                 }
             }
-
-            var memberById = Uow.MemberRepository.GetQueryByMemberId(memberId);
-
-            await ChangeEmailByUserAsync(memberById, memberView.Email);
-
-            memberById.FullName = memberView.FullName;
-            memberById.DefaultProjectId = memberView.DefaultProjectId;
-            memberById.DefaultTaskId = memberView.DefaultTaskId;
-            memberById.DateFormatId = memberView.DateFormatId;
-            memberById.WeekStart = (WeekStart)memberView.WeekStart;
-            memberById.IsWeeklyTimeEntryUpdatesSend =memberView.IsWeeklyTimeEntryUpdatesSend;
-            memberById.TimeFormat = memberView.TimeFormat;
-            memberById.SendEmailTime = memberView.SendEmailTime;
-            memberById.SendEmailDays = ConverterBitMask.DayOfWeekStringToInt(memberView.SendEmailDays);
-
-            try
+            else
             {
-                Uow.MemberRepository.Update(memberById);
+                await ChangeEmailByUserAsync(member, memberView.Email);
 
-                if (Uow.Save() > 0)
+                member.FullName = memberView.FullName;
+                member.DefaultProjectId = memberView.DefaultProjectId;
+                member.DefaultTaskId = memberView.DefaultTaskId;
+                member.DateFormatId = memberView.DateFormatId;
+                member.WeekStart = (WeekStart)memberView.WeekStart;
+                member.IsWeeklyTimeEntryUpdatesSend = memberView.IsWeeklyTimeEntryUpdatesSend;
+                member.TimeFormat = memberView.TimeFormat;
+                member.SendEmailTime = memberView.SendEmailTime;
+                member.SendEmailDays = ConverterBitMask.DayOfWeekStringToInt(memberView.SendEmailDays);
+
+                try
                 {
-                    UpdateUserClaims(memberById.Id);
+                    Uow.MemberRepository.Update(member);
+
+                    if (Uow.Save() > 0)
+                    {
+                        UpdateUserClaims(member.Id);
+                    }
+
+                    Uow.MemberRepository.LinkedCacheClear();
                 }
-
-                Uow.MemberRepository.LinkedCacheClear();
-            }
-            catch (Exception e)
-            {
-                Uow.MemberRepository.LinkedCacheClear();
-                throw new CoralTimeDangerException("An error occurred while updating member", e);
+                catch (Exception e)
+                {
+                    Uow.MemberRepository.LinkedCacheClear();
+                    throw new CoralTimeDangerException("An error occurred while updating member", e);
+                }
             }
 
-            var memberByIdResult = Uow.MemberRepository.LinkedCacheGetById(memberById.Id);
+            var memberByIdResult = Uow.MemberRepository.LinkedCacheGetById(member.Id);
             var urlIcon = _avatarService.GetUrlIcon(memberByIdResult.Id);
             var meberView = memberByIdResult.GetView(Mapper, urlIcon);
 
@@ -531,8 +535,9 @@ namespace CoralTime.BL.Services
 
                 return new PasswordForgotEmailResultView { IsSentEmail = true, Message = (int)Constants.Errors.None };
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError($"SentForgotEmailAsync - {e.Message}");
                 return new PasswordForgotEmailResultView { IsSentEmail = false, Message = (int)Constants.Errors.ErrorSendEmail };
             }
         }

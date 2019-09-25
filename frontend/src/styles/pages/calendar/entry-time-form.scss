@@ -259,6 +259,22 @@ ct-entry-time {
     }
   }
 
+  .ct-task-issue {
+    margin-bottom: 18px;
+    height: 30px;
+    width: 100%;
+
+    .ct-select-selected-options-text {
+      padding: 0 20px 0 10px !important;
+      line-height: 29.5px;
+    }
+
+    .ct-select-component {
+      margin-top: -15px;
+      padding-left: 0;
+    }
+  }
+
   .ct-task-description {
     min-height: 40px;
     max-height: 115px;

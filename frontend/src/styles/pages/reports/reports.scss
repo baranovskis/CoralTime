@@ -427,7 +427,7 @@ $fieldHeight: 30px;
       width: 105px;
     }
 
-    .ct-cell-project, .ct-cell-client, .ct-cell-user, .ct-cell-task {
+    .ct-cell-project, .ct-cell-client, .ct-cell-user, .ct-cell-task, .ct-cell-issue {
       width: 220px;
     }
 
@@ -440,7 +440,7 @@ $fieldHeight: 30px;
         width: 90px;
       }
 
-      .ct-cell-project, .ct-cell-client, .ct-cell-user, .ct-cell-task {
+      .ct-cell-project, .ct-cell-client, .ct-cell-user, .ct-cell-task, .ct-cell-issue {
         width: 150px;
       }
     }

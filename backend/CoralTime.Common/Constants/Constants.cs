@@ -210,7 +210,8 @@ namespace CoralTime.Common.Constants
             ShowEstimatedTime = 1,
             ShowDate = 2,
             ShowNotes = 3,
-            ShowStartFinish = 4
+            ShowStartFinish = 4,
+            ShowIssue = 5
         }
 
         public enum DatesStaticIds

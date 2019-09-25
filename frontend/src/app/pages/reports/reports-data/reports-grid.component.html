@@ -27,6 +27,7 @@
     <p-column *ngIf="groupById != 1" styleClass="ct-cell-project" field="projectName" header="Project" [sortable]="true"></p-column>
     <p-column *ngIf="groupById != 2" styleClass="ct-cell-user" field="memberName" header="User" [sortable]="true"></p-column>
     <p-column field="taskName" styleClass="ct-cell-task" [sortable]="true" header="Task"></p-column>
+    <p-column *ngIf="showColumnIds.indexOf(5) > -1" field="issueId" styleClass="ct-cell-issue" [sortable]="true" header="Issue"></p-column>
 
     <p-column *ngIf="showColumnIds.indexOf(4) > -1" styleClass="ct-cell-start" field="timeFrom" header="Start">
         <ng-template let-item="rowData" pTemplate="body">
@@ -75,6 +76,7 @@
                 <td *ngIf="groupById != 1" class="ct-cell-project"></td>
                 <td *ngIf="groupById != 2" class="ct-cell-user"></td>
                 <td class="ct-cell-task"></td>
+                <td *ngIf="showColumnIds.indexOf(5) > -1" class="ct-cell-issue"></td>
                 <td *ngIf="showColumnIds.indexOf(4) > -1" class="ct-cell-start"></td>
                 <td *ngIf="showColumnIds.indexOf(4) > -1" class="ct-cell-finish"></td>
 

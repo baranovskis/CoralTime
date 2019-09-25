@@ -267,7 +267,8 @@ namespace CoralTime.MySqlMigrations.Migrations
                     SendEmailTime = table.Column<int>(nullable: false),
                     TimeFormat = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    WeekStart = table.Column<int>(nullable: false)
+                    WeekStart = table.Column<int>(nullable: false),
+                    BearerToken = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -313,7 +314,8 @@ namespace CoralTime.MySqlMigrations.Migrations
                     LastUpdateDate = table.Column<DateTime>(nullable: false),
                     LockPeriod = table.Column<int>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
-                    NotificationDay = table.Column<int>(nullable: false)
+                    NotificationDay = table.Column<int>(nullable: false),
+                    IsYouTrack = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -529,7 +531,9 @@ namespace CoralTime.MySqlMigrations.Migrations
                     TimeEstimated = table.Column<int>(nullable: false),
                     TimeFrom = table.Column<int>(nullable: false),
                     TimeTimerStart = table.Column<int>(nullable: false),
-                    TimeTo = table.Column<int>(nullable: false)
+                    TimeTo = table.Column<int>(nullable: false),
+                    IssueId = table.Column<string>(nullable: true),
+                    WorkItemId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

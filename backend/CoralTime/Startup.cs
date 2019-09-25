@@ -47,6 +47,7 @@ using System.Security.Cryptography.X509Certificates;
 using IdentityServer4.Test;
 using Microsoft.IdentityModel.Tokens;
 using static CoralTime.Common.Constants.Constants.Routes.OData;
+using Microsoft.IdentityModel.Logging;
 
 namespace CoralTime
 {
@@ -93,7 +94,7 @@ namespace CoralTime
 
             AddApplicationServices(services);
             services.AddMemoryCache();
-            services.AddAutoMapper();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddMvc();
 
             // Add OData
@@ -114,7 +115,9 @@ namespace CoralTime
             {
                 c.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "CoralTime", Version = "v1" });
             });
-            
+
+            IdentityModelEventSource.ShowPII = true;
+
             return services.BuildServiceProvider();
         }
 
@@ -207,6 +210,7 @@ namespace CoralTime
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<ITasksService, TasksService>();
+            services.AddScoped<IIssuesService, IssuesService>();
             services.AddScoped<ITimeEntryService, TimeEntryService>();
             services.AddScoped<IReportsService, ReportsService>();
             services.AddScoped<IReportExportService, ReportsExportService>();
@@ -287,7 +291,7 @@ namespace CoralTime
             }
             else
             {
-                var cert = new X509Certificate2("coraltime.pfx", "", X509KeyStorageFlags.MachineKeySet);
+                var cert = new X509Certificate2(Path.Combine(Environment.CurrentDirectory, Configuration["Certificate:FileName"]), Configuration["Certificate:Password"], X509KeyStorageFlags.MachineKeySet);
 
                 services.AddIdentityServer()
                     .AddInMemoryIdentityResources(Config.GetIdentityResources())
@@ -317,6 +321,7 @@ namespace CoralTime
                     // name of the API resource
                     options.Audience = "WebAPI";
                     options.Authority = Configuration["Authority"];
+                    options.ClaimsIssuer = Configuration["Issuer"];
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
@@ -336,6 +341,7 @@ namespace CoralTime
             builder.EntitySet<MemberProjectRoleView>("MemberProjectRoles");
             builder.EntitySet<ProjectRoleView>("ProjectRoles");
             builder.EntitySet<TaskTypeView>("Tasks");
+            builder.EntitySet<IssueView>("Issues");
             builder.EntitySet<ErrorODataView>("Errors");
             builder.EntitySet<SettingsView>("Settings");
             builder.EntitySet<ManagerProjectsView>("ManagerProjects");

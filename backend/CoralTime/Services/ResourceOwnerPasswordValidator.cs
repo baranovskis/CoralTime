@@ -4,6 +4,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,10 +18,14 @@ namespace CoralTime.Services
 
         private readonly IConfiguration _configuration;
 
-        public ResourceOwnerPasswordValidator(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        private readonly ILogger<ResourceOwnerPasswordValidator> _logger;
+
+
+        public ResourceOwnerPasswordValidator(UserManager<ApplicationUser> userManager, IConfiguration configuration, ILogger<ResourceOwnerPasswordValidator> logger)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _logger = logger;
         }
 
         //this is used to validate your user account with provided grant at /connect/token
@@ -52,9 +57,9 @@ namespace CoralTime.Services
                 context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "User does not exist");
                 return;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //TODO add logging
+                _logger.LogError($"ValidateAsync - {e.Message}");
                 context.Result = new GrantValidationResult(TokenRequestErrors.InvalidGrant, "Internal error");
             }
         }
@@ -64,8 +69,8 @@ namespace CoralTime.Services
         {
             return new Claim[]
             {
-            new Claim("user_id", user.Id.ToString() ?? ""),
-            new Claim(JwtClaimTypes.Email, user.Email  ?? "")
+                new Claim("user_id", user.Id.ToString() ?? ""),
+                new Claim(JwtClaimTypes.Email, user.Email  ?? "")
             };
         }
     }

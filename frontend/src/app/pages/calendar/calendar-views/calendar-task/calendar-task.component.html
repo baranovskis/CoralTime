@@ -44,12 +44,17 @@
 <div class="ct-calendar-time-entry-container" [class.ct-lock-overlay]="!isTimeEntryAvailable">
     <div (click)="openEntryTimeForm()" [style.height]="calculateCalendarTaskHeight() + 'px'">
         <div class="ct-calendar-time-entry-title">
-            {{timeEntry.projectName}}
+            Project: {{timeEntry.projectName}}
         </div>
         <div class="ct-calendar-time-entry-type">
-            {{timeEntry.taskName}}
+            Task: {{timeEntry.taskName}}
         </div>
-        <pre class="ct-calendar-time-entry-description" *ngIf="timeEntry.description">{{ timeEntry.description }}</pre>
+        <div *ngIf="timeEntry?.issueId" class="ct-calendar-time-entry-type">
+            Issue: {{timeEntry.issueId}}
+        </div>
+        <pre class="ct-calendar-time-entry-description" *ngIf="timeEntry.description">
+            Description : {{ timeEntry.description }}
+        </pre>
     </div>
     <div class="ct-calendar-time-entry-time" (click)="openEntryTimeForm()">
         <div *ngIf="!isTimerShown" class="ct-calendar-time-entry-hours-tracked" title="Tracked time">

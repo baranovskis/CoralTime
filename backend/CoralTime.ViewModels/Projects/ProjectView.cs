@@ -41,6 +41,8 @@ namespace CoralTime.ViewModels.Projects
        
         public IEnumerable<MemberView> Members { get; set; }
 
-        public bool IsCurrentUserOnProject { get; set; } = true;        
+        public bool IsCurrentUserOnProject { get; set; } = true;
+
+        public bool IsYouTrack { get; set; }
     }
 }

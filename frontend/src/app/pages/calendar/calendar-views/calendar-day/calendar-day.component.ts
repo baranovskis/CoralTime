@@ -41,7 +41,8 @@ export class CalendarDayComponent implements OnInit {
 		let newTimeEntry = {
 			date: currentDate,
 			projectName: 'Select Project',
-			taskName: 'Select Task'
+			taskName: 'Select Task',
+			issueName: 'Select Issue'
 		};
 		this.newTimeEntry = new TimeEntry(newTimeEntry);
 		this.isEntryFormOpened = true;

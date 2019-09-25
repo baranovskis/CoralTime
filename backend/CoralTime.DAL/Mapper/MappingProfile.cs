@@ -10,6 +10,7 @@ using CoralTime.ViewModels.Reports.Responce.DropDowns.Filters;
 using CoralTime.ViewModels.Settings;
 using CoralTime.ViewModels.Tasks;
 using CoralTime.ViewModels.TimeEntries;
+using YouTrackSharp.Issues;
 using static CoralTime.Common.Constants.Constants;
 
 namespace CoralTime.DAL.Mapper
@@ -69,6 +70,10 @@ namespace CoralTime.DAL.Mapper
             CreateMap<TaskType, TaskTypeView>();
 
             CreateMap<ReportsSettings, ReportsSettings>();
+
+            CreateMap<ProjectView, ManagerProjectsView>();
+
+            CreateMap<Issue, IssueView>().ConvertUsing(new IssueToIssueViewConverter());
         }
 
         public class MemberToMemberViewConverter : ITypeConverter<Member, MemberView>
@@ -92,7 +97,8 @@ namespace CoralTime.DAL.Mapper
                     SendEmailDays = ConverterBitMask.DayOfWeekIntToString(source.SendEmailDays),
                     TimeFormat = source.TimeFormat,
                     SendEmailTime = source.SendEmailTime,
-                    WeekStart =  (int)source.WeekStart
+                    WeekStart =  (int)source.WeekStart,
+                    BearerToken = source.BearerToken
                 };
             }
         }
@@ -112,6 +118,7 @@ namespace CoralTime.DAL.Mapper
                     SendEmailDays = ConverterBitMask.DayOfWeekStringToInt(source.SendEmailDays),
                     SendEmailTime = source.SendEmailTime,
                     TimeFormat = source.TimeFormat,
+                    BearerToken = source.BearerToken
                 };
             }
         }
@@ -134,6 +141,21 @@ namespace CoralTime.DAL.Mapper
                     IsProjectActive = source.Project.IsActive,
                     IsProjectPrivate = source.Project.IsPrivate,
                     IsMemberActive = source.Member.User.IsActive
+                };
+            }
+        }
+
+        public class IssueToIssueViewConverter : ITypeConverter<Issue, IssueView>
+        {
+            public IssueView Convert(Issue source, IssueView destination, ResolutionContext context)
+            {
+                var project = source.GetField("projectShortName")?.Value;
+
+                return new IssueView
+                {
+                    Id = source.Id,
+                    Name = source.Summary,
+                    ProjectName = project?.ToString()
                 };
             }
         }

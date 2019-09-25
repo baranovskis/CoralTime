@@ -46,5 +46,7 @@ namespace CoralTime.DAL.Models
         public Constants.LockTimePeriod LockPeriod { get; set; }
 
         public int NotificationDay { get; set; }
+
+        public bool IsYouTrack { get; set; }
     }
 }

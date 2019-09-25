@@ -39,7 +39,7 @@ namespace CoralTime.Api.v1
             }
             catch (Exception e)
             {
-                _logger.LogWarning($"Method GET - {e}");
+                _logger.LogWarning($"Method GET - {e.Message}");
                 return BadRequest();
             }
         }

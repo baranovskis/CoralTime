@@ -38,5 +38,7 @@ namespace CoralTime.ViewModels.Projects
         public bool IsNotificationEnabled { get; set; }
 
         public IEnumerable<MemberView> Members { get; set; }
+
+        public bool IsYouTrack { get; set; }
     }
 }

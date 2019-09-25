@@ -25,7 +25,8 @@ namespace CoralTime
         {
             return new List<ApiResource>
             {
-                new ApiResource("WebAPI" ) {
+                new ApiResource("WebAPI" )
+                {
                     UserClaims = { JwtClaimTypes.Email, JwtClaimTypes.NickName, JwtClaimTypes.Name, JwtClaimTypes.Role, JwtClaimTypes.Id}
                 }
             };

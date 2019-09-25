@@ -65,6 +65,11 @@ namespace CoralTime.BL.Services.Reports.DropDownsAndGrid
             {
                 Id = (int) Constants.ShowColumnModelIds.ShowStartFinish,
                 Description = "Show Start/Finish Time"
+            },
+            new ReportCommonDropDownsView
+            {
+                Id = (int) Constants.ShowColumnModelIds.ShowIssue,
+                Description = "Show Issues"
             }
         };
 

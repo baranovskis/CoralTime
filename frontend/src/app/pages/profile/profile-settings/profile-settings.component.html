@@ -118,6 +118,14 @@
                         </div>
 
                         <div>
+                            <label class="ct-form-label">YouTrack Token</label>
+                            <div class="ct-required-field-container">
+                                <input class="ct-input ct-full-width" name="token"
+                                       [(ngModel)]="userModel.bearerToken" />
+                            </div>
+                        </div>
+
+                        <div>
                             <mat-checkbox name="isWeeklyTimeEntryUpdatesSend" [(ngModel)]="userModel.isWeeklyTimeEntryUpdatesSend">
                                 Send weekly time entry updates
                             </mat-checkbox>

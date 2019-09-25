@@ -59,6 +59,8 @@ export class TimeEntry {
 	taskTypesId: number;
 	timeOptions: TimeOptions;
 	timeValues: TimeValues;
+	issueName: string;
+	issueId: string;
 
 	constructor(data = null) {
 		this.color = data && data.color || 0;
@@ -75,6 +77,8 @@ export class TimeEntry {
 		this.projectName = data && data.projectName;
 		this.taskName = data && data.taskName;
 		this.taskTypesId = data && data.taskTypesId;
+		this.issueName = data && data.issueName;
+		this.issueId = data && data.issueId;
 		this.timeOptions = {
 			isFromToShow: data && data.timeOptions && data.timeOptions.isFromToShow,
 			timeTimerStart: data && data.timeOptions && data.timeOptions.timeTimerStart || 0

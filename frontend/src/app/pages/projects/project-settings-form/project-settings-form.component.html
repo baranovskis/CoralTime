@@ -7,7 +7,8 @@
     <form #projectSettingsForm="ngForm" (ngSubmit)="save()">
         <div class="ct-form-block">
             <label class="ct-form-label">Time Entries Lock</label>
-            <mat-checkbox value="true" name="isTimeLockEnabled" [(ngModel)]="model.isTimeLockEnabled">Enable
+            <mat-checkbox value="true" name="isTimeLockEnabled" [(ngModel)]="model.isTimeLockEnabled">
+                Enable
             </mat-checkbox>
 
             <p>
@@ -71,6 +72,13 @@
                     </div>
                 </div>
             </mat-radio-group>
+        </div>
+
+        <div class="ct-form-block">
+            <label class="ct-form-label">YouTrack Integration</label>
+            <mat-checkbox value="false" name="isYouTrack" [(ngModel)]="model.isYouTrack">
+                Enable
+            </mat-checkbox>
         </div>
 
         <div class="ct-buttons-block" mat-dialog-actions>

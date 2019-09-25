@@ -16,6 +16,7 @@ export class Project {
 	name: string;
 	notificationDay: number;
 	tasksCount: number;
+	isYouTrack: boolean;
 
 	constructor(data = null) {
 		if (!data) {
@@ -39,5 +40,6 @@ export class Project {
 		this.membersCount = data.membersCount;
 		this.name = data.name;
 		this.tasksCount = data.tasksCount;
+		this.isYouTrack = data.isYouTrack;
 	}
 }

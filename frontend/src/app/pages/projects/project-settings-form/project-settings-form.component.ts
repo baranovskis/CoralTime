@@ -12,6 +12,7 @@ class ProjectSettingsModel {
 	isTimeLockEnabled: boolean;
 	lockPeriod: number;
 	notificationDay: number;
+	isYouTrack: boolean;
 
 	static fromProject(project: Project) {
 		let instance = new this;
@@ -23,6 +24,7 @@ class ProjectSettingsModel {
 		instance.isTimeLockEnabled = project.isTimeLockEnabled;
 		instance.lockPeriod = project.lockPeriod ? project.lockPeriod : 1;
 		instance.notificationDay = project.notificationDay;
+		instance.isYouTrack = project.isYouTrack;
 
 		return instance;
 	}
@@ -36,7 +38,8 @@ class ProjectSettingsModel {
 			isPrivate: this.isPrivate,
 			isTimeLockEnabled: this.isTimeLockEnabled,
 			lockPeriod: this.lockPeriod,
-			notificationDay: this.notificationDay
+			notificationDay: this.notificationDay,
+			isYouTrack: this.isYouTrack
 		});
 	}
 }

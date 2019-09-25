@@ -246,7 +246,8 @@ export class ProfileSettingsComponent implements OnInit {
 			dateFormatId: this.userModel.dateFormatId,
 			isWeeklyTimeEntryUpdatesSend: this.userModel.isWeeklyTimeEntryUpdatesSend,
 			timeFormat: this.userModel.timeFormat,
-			weekStart: this.userModel.weekStart
+			weekStart: this.userModel.weekStart,
+			bearerToken: this.userModel.bearerToken,
 		};
 
 		this.profileService.submitPreferences(preferencesObject, this.userModel.id)

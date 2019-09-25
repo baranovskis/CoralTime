@@ -28,12 +28,11 @@ namespace CoralTime.BL.Services
         public IEnumerable<ProjectView> ManageProjectsOfManager()
         {
             var user = Uow.UserRepository.LinkedCacheGetByName(ImpersonatedUserName);
+
             if (user == null)
             {
                 throw new CoralTimeEntityNotFoundException($"User with userName {ImpersonatedUserName} not found.");
             }
-
-            var getAllProjects = Uow.ProjectRepository.LinkedCacheGetList();
 
             var getGlobalTasks = Uow.TaskTypeRepository.LinkedCacheGetList()
                 .Where(j => j.ProjectId == null && j.IsActive)
@@ -43,7 +42,9 @@ namespace CoralTime.BL.Services
 
             if (user.IsAdmin)
             {
-                return getAllProjects.Select(p => p.GetViewManageProjectsOfManager(Mapper, GetCacheMembersActiveCount(), getGlobalTasks));
+                return Uow.ProjectRepository.LinkedCacheGetList()
+                    .Select(p => p.GetViewManageProjectsOfManager(Mapper, GetCacheMembersActiveCount(), getGlobalTasks))
+                    .ToList();
             }
 
             #endregion Constrain for admin: return all projects. Tab "Projects - Grid".
@@ -57,9 +58,9 @@ namespace CoralTime.BL.Services
 
                 // Get All projects ids where member has manager role at this project.
                 var targetedProjects = Uow.MemberProjectRoleRepository.LinkedCacheGetList()
-                .Where(x => x.RoleId == managerRoleId && x.MemberId == memberId)
-                .Select(x => x.Project)
-                .ToList();
+                    .Where(x => x.RoleId == managerRoleId && x.MemberId == memberId)
+                    .Select(x => x.Project)
+                    .ToList();
 
                 return targetedProjects.Select(p => p.GetViewManageProjectsOfManager(Mapper, GetCacheMembersActiveCount(), getGlobalTasks));
             }
@@ -74,6 +75,7 @@ namespace CoralTime.BL.Services
         public IEnumerable<ProjectView> TimeTrackerAllProjects()
         {
             var user = Uow.UserRepository.LinkedCacheGetByName(ImpersonatedUserName);
+
             if (user == null)
             {
                 throw new CoralTimeEntityNotFoundException("User with userName " + $"{ImpersonatedUserName} not found");

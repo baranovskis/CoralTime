@@ -11,26 +11,8 @@ namespace CoralTime
 {
     public class Program
     {
-        [DllImport("Kernel32.dll")]
-        private static extern IntPtr GetConsoleWindow();
-
-        [DllImport("User32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int cmdShow);
-
         public static void Main(string[] args)
         {
-#if DEBUG
-            // Hide Kestrel console.
-            var hWnd = GetConsoleWindow();
-            if (hWnd != IntPtr.Zero)
-            {
-                ShowWindow(hWnd, 0);
-            }
-
-            // Run application at browser tab instead of new window.
-            Process.Start(new ProcessStartInfo("cmd", "/c start http://localhost:5000"));
-#endif
-
             BuildWebHost(args).Run();
         }
 
@@ -50,11 +32,12 @@ namespace CoralTime
 
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                           .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-                          .AddJsonFile("defaultDbData.json", optional: true); 
+                          .AddJsonFile("defaultDbData.json", optional: true);
 
                     if (env.IsDevelopment())
                     {
                         var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+
                         if (appAssembly != null)
                         {
                             config.AddUserSecrets(appAssembly, optional: true);

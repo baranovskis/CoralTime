@@ -3,10 +3,12 @@ import {
 } from '@angular/core';
 import { Project } from '../../../../models/project';
 import { Task } from '../../../../models/task';
+import { Issue } from '../../../../models/issue';
 import { TimeEntry, DateUtils, CalendarDay, Time } from '../../../../models/calendar';
 import { Subscription, Observable } from 'rxjs';
 import { ArrayUtils } from '../../../../core/object-utils';
 import { TasksService } from '../../../../services/tasks.service';
+import { IssuesService } from '../../../../services/issues.service';
 import { CalendarService } from '../../../../services/calendar.service';
 import { NotificationService } from '../../../../core/notification.service';
 import { CalendarProjectsService } from '../../calendar-projects.service';
@@ -17,6 +19,7 @@ import { ImpersonationService } from '../../../../services/impersonation.service
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../../../models/user';
 import { SelectItem } from 'primeng/primeng';
+import { e } from '@angular/core/src/render3';
 
 @Component({
 	selector: 'ct-entry-time-form',
@@ -43,6 +46,8 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 	projectModel: Project;
 	taskList: Task[];
 	taskModel: Task;
+	issueList: Issue[];
+	issueModel: Issue;
 	ticks: number;
 	timeActual: string;
 	timeEstimated: string;
@@ -65,6 +70,7 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 	afternoonModel: SelectItem = this.afternoonList[0];
 
 	private isTasksLoaded: boolean = false;
+	private isIssuesLoaded: boolean = false;
 	private dayInfo: CalendarDay;
 	private defaultProject: Project;
 	private totalTrackedTimeForDay: number;
@@ -77,7 +83,8 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 	            private notificationService: NotificationService,
 	            private projectsService: CalendarProjectsService,
 	            private route: ActivatedRoute,
-	            private tasksService: TasksService) {
+				private tasksService: TasksService,
+				private issueService: IssuesService) {
 	}
 
 	ngOnInit() {
@@ -102,6 +109,10 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 		this.getFormHeight();
 	}
 
+	isYouTrackUser(): boolean {
+		return !!this.userInfo && !(!this.userInfo.bearerToken || /^\s*$/.test(this.userInfo.bearerToken));
+	}
+
 	// PROJECT
 
 	isArchivedProjectShown(): boolean {
@@ -115,6 +126,7 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 		this.currentTimeEntry.projectName = projectModel.name;
 		this.currentTimeEntry.color = projectModel.color;
 		this.loadTasks(projectModel.id);
+		this.loadIssues(projectModel.name);
 	}
 
 	// TASK
@@ -127,6 +139,14 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 		this.isFormChanged = true;
 		this.currentTimeEntry.taskTypesId = taskModel.id;
 		this.currentTimeEntry.taskName = taskModel.name;
+	}
+
+	// ISSUE
+	
+	issueOnChange(issueModel: Issue): void {
+		this.isFormChanged = true;
+		this.currentTimeEntry.issueId = issueModel.id;
+		this.currentTimeEntry.issueName = issueModel.name;
 	}
 
 	// DESCRIPTION
@@ -433,15 +453,17 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 				this.currentTimeEntry.projectId = this.projectList[0].id;
 				this.currentTimeEntry.color = this.projectList[0].color;
 				this.loadTasks(this.currentTimeEntry.projectId);
+				this.loadIssues(this.currentTimeEntry.projectName);
 			}
 
 			if (this.projectModel) {
 				this.timeEntry.projectId = this.projectModel.id;
 				this.timeEntry.projectName = this.projectModel.name;
 				this.timeEntry.color = this.projectModel.color;
-			} else {
+			} /*else {
 				this.loadTasks(this.currentTimeEntry.projectId);
-			}
+				this.loadIssues(this.currentTimeEntry.projectName);
+			}*/
 		});
 	}
 
@@ -480,6 +502,47 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 		return filteredTasks;
 	}
 
+	private loadIssues(projectName?: string): void {
+		if (this.projectModel == null || !this.projectModel.isYouTrack || !this.isYouTrackUser()) {
+			this.timeEntry.issueId = null;
+			this.timeEntry.issueName = null;
+			this.isIssuesLoaded = false;
+		}
+		else {
+			this.issueService.getIssues(projectName).subscribe((res) => {
+				this.issueList = this.filterIssues(res.data);
+				this.issueModel = ArrayUtils.findByProperty(this.issueList, 'id', this.currentTimeEntry.issueId);
+
+				if (!this.isIssuesLoaded && this.issueModel) {
+					this.timeEntry.issueId = this.issueModel.id;
+					this.timeEntry.issueName = this.issueModel.name;
+				}
+
+				this.isIssuesLoaded = true;
+			});
+		}
+	}
+
+	private filterIssues(tasks: Issue[]): Issue[] {
+		let filteredIssues: Issue[] = [];
+		let isAdded: boolean = false;
+		tasks.forEach((issue1, index1) => {
+			isAdded = false;
+			if (issue1.id) {
+				filteredIssues.push(issue1);
+			} else {
+				tasks.forEach((task2, index2) => {
+					if (task2.id && issue1.name.toLowerCase() === task2.name.toLowerCase() && index1 !== index2) {
+						isAdded = true;
+					}
+				});
+				if (!isAdded) {
+					filteredIssues.push(issue1);
+				}
+			}
+		});
+		return filteredIssues;
+	}
 	private saveTimeEntry(timeEntry: TimeEntry): void {
 		for (let prop in this.timeEntry) {
 			this.timeEntry[prop] = timeEntry[prop];

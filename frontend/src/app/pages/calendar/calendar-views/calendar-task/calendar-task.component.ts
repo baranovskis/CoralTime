@@ -318,8 +318,8 @@ export class CalendarTaskComponent implements OnInit, OnDestroy {
 	// GENERAL
 
 	calculateCalendarTaskHeight(): number {
-		let taskHeight = Math.max(this.timeEntry.timeValues.timeActual / 3600, 1.5) * 95 - 42;
-		return this.timeEntry.timeOptions.isFromToShow ? taskHeight - 25 : taskHeight;
+		let taskHeight = Math.max(this.timeEntry.timeValues.timeActual / 3600, 1.5) * 95 - 22;
+		return this.timeEntry.timeOptions.isFromToShow ? taskHeight - 5 : taskHeight;
 	}
 
 	openEntryTimeForm() {

@@ -145,6 +145,8 @@ namespace CoralTime.DAL.Migrations
 
                     b.Property<int>("WeekStart");
 
+                    b.Property<string>("BearerToken");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -263,6 +265,8 @@ namespace CoralTime.DAL.Migrations
                         .HasMaxLength(200);
 
                     b.Property<int>("NotificationDay");
+
+                    b.Property<bool>("IsYouTrack");
 
                     b.HasKey("Id");
 
@@ -383,6 +387,10 @@ namespace CoralTime.DAL.Migrations
                     b.Property<int>("TimeTimerStart");
 
                     b.Property<int>("TimeTo");
+
+                    b.Property<string>("IssueId");
+
+                    b.Property<string>("WorkItemId");
 
                     b.HasKey("Id");
 

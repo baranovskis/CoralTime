@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { LayoutModule } from './pages/layout/layout.module';
 import { ProjectsService } from './services/projects.service';
 import { TasksService } from './services/tasks.service';
+import { IssuesService } from './services/issues.service';
 import { UsersService } from './services/users.service';
 import { SettingsService } from './services/settings.service';
 import { ImpersonationService } from './services/impersonation.service';
@@ -52,6 +53,7 @@ export function httpFactory(http: HttpClient) {
 		ProjectsService,
 		SettingsService,
 		TasksService,
+		IssuesService,
 		UsersService
 	]
 })
