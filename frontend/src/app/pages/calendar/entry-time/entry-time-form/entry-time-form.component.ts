@@ -70,7 +70,7 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 	afternoonModel: SelectItem = this.afternoonList[0];
 
 	private isTasksLoaded: boolean = false;
-	private isIssuesLoaded: boolean = false;
+	isIssuesLoaded: boolean = false;
 	private dayInfo: CalendarDay;
 	private defaultProject: Project;
 	private totalTrackedTimeForDay: number;
