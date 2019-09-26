@@ -44,8 +44,7 @@ namespace CoralTime.BL.Services
         private string GetUrlImageByType(int memberId, string imageType)
         {
             var imageFileName = Uow.MemberImageRepository.LinkedCacheGetByMemberId(memberId)?.FileNameImage;
-
-            var imagePath = string.Empty;
+            string imagePath;
 
             if (imageFileName == null)
             {
@@ -108,7 +107,7 @@ namespace CoralTime.BL.Services
             return sb.ToString();
         }
 
-        private string GetStaticFileUrl() => $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/{Constants.Folders.StaticFilesFolder}"; 
+        private string GetStaticFileUrl() => $"{_config["BaseUrl"]}/{Constants.Folders.StaticFilesFolder}"; 
 
         #endregion
 

@@ -3,6 +3,7 @@ using CoralTime.BL.Interfaces;
 using CoralTime.ViewModels.Projects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -14,8 +15,8 @@ namespace CoralTime.Api.v1.Odata.Projects
     [Authorize]
     public class ManagerProjectsController : BaseODataController<ManagerProjectsController, IProjectService>
     {
-        public ManagerProjectsController(IProjectService service, IMapper mapper, ILogger<ManagerProjectsController> logger)
-            : base(logger, mapper, service) { }
+        public ManagerProjectsController(IProjectService service, IMapper mapper, IConfiguration config, ILogger<ManagerProjectsController> logger)
+            : base(logger, mapper, config, service) { }
 
         // GET api/v1/odata/ManagerProjects
         [HttpGet]

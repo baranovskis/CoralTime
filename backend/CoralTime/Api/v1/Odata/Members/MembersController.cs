@@ -5,6 +5,7 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
@@ -19,8 +20,8 @@ namespace CoralTime.Api.v1.Odata.Members
     public class MembersController : BaseODataController<MembersController, IMemberService>
     {
         private readonly IImageService _avatarService;
-        public MembersController(IMemberService service, ILogger<MembersController> logger, IMapper mapper, IImageService avatarService)
-            : base(logger, mapper, service)
+        public MembersController(IMemberService service, ILogger<MembersController> logger, IMapper mapper, IConfiguration config, IImageService avatarService)
+            : base(logger, mapper, config, service)
         {
             _avatarService = avatarService;
         }
