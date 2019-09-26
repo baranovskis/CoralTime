@@ -50,6 +50,9 @@ namespace CoralTime.Common.Helpers
         {
             using (var client = new SmtpClient())
             {
+                // https://github.com/jstedfast/MailKit/issues/735
+                client.CheckCertificateRevocation = false;
+
                 client.Connect(_configuration["Email:Host"], int.Parse(_configuration["Email:Port"]), SecureSocketOptions.Auto);
 
                 bool.TryParse(_configuration["Email:EnableAuthetication"] ?? "false", out bool enableAuthetication);
