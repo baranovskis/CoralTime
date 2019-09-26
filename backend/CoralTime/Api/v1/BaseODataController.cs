@@ -3,7 +3,6 @@ using CoralTime.Common.Middlewares;
 using CoralTime.ViewModels.Errors;
 using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -16,14 +15,12 @@ namespace CoralTime.Api.v1
     {
         protected readonly ILogger<T> _logger;
         protected readonly IMapper _mapper;
-        protected readonly IConfiguration _config;
         protected readonly S _service;
 
-        public BaseODataController(ILogger<T> logger, IMapper mapper, IConfiguration config, S service)
+        public BaseODataController(ILogger<T> logger, IMapper mapper, S service)
         {
             _logger = logger;
             _mapper = mapper;
-            _config = config;
             _service = service;
         }
 
@@ -56,8 +53,6 @@ namespace CoralTime.Api.v1
             });
         }
 
-        protected string GetBaseUrl() => _config["BaseUrl"];
-        
         private string GetWrongKeys()
         {
             var wrongKeys = ControllerContext.ModelState.Keys

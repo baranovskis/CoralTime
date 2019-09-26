@@ -20,9 +20,12 @@ namespace CoralTime.Api.v1.Odata.Members
     public class MembersController : BaseODataController<MembersController, IMemberService>
     {
         private readonly IImageService _avatarService;
+        private readonly IConfiguration _config;
+
         public MembersController(IMemberService service, ILogger<MembersController> logger, IMapper mapper, IConfiguration config, IImageService avatarService)
-            : base(logger, mapper, config, service)
+            : base(logger, mapper, service)
         {
+            _config = config;
             _avatarService = avatarService;
         }
 
@@ -80,7 +83,7 @@ namespace CoralTime.Api.v1.Odata.Members
                 return SendInvalidModelResponse();
             }
 
-            var createdMemberView = await _service.CreateNewUser(memberView, GetBaseUrl());
+            var createdMemberView = await _service.CreateNewUser(memberView, _config["BaseUrl"]);
 
             var locationUri = $"{Request.Host}/{BaseODataRoute}/Members/{memberView.Id}";
 
@@ -101,7 +104,7 @@ namespace CoralTime.Api.v1.Odata.Members
             
             try
             {
-                return Ok(await _service.Update(memberView, GetBaseUrl()));
+                return Ok(await _service.Update(memberView, _config["BaseUrl"]));
             }
             catch (Exception e)
             {

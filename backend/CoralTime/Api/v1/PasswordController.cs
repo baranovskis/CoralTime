@@ -2,6 +2,7 @@ using CoralTime.BL.Interfaces;
 using CoralTime.ViewModels.Member;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using static CoralTime.Common.Constants.Constants;
@@ -12,8 +13,13 @@ namespace CoralTime.Api.v1
     [Route(BaseControllerRoute)]
     public class PasswordController : BaseController<PasswordController, IMemberService>
     {
-        public PasswordController(IMemberService service, ILogger<PasswordController> logger) 
-            : base(logger, service) { }
+        private readonly IConfiguration _config;
+
+        public PasswordController(IMemberService service, ILogger<PasswordController> logger, IConfiguration config) 
+            : base(logger, service)
+        {
+            _config = config;
+        }
 
         //Put: api/v1/Password/2
         [Authorize]
@@ -41,7 +47,7 @@ namespace CoralTime.Api.v1
         [Route(SendForgotEmailRoute)]
         public async Task<IActionResult> ResetPasswordAsync(string email)
         {
-            var result = await _service.SentForgotEmailAsync(email, GetBaseUrl());
+            var result = await _service.SentForgotEmailAsync(email, _config["BaseUrl"]);
             return new JsonResult(result);
         }
 

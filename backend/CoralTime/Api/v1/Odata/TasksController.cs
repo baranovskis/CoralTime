@@ -5,7 +5,6 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using static CoralTime.Common.Constants.Constants;
@@ -18,8 +17,8 @@ namespace CoralTime.Api.v1.Odata
     [Authorize]
     public class TasksController : BaseODataController<TasksController, ITasksService>
     {
-        public TasksController(ITasksService service, IMapper mapper, IConfiguration config, ILogger<TasksController> logger)
-            : base(logger, mapper, config, service) { }
+        public TasksController(ITasksService service, IMapper mapper, ILogger<TasksController> logger)
+            : base(logger, mapper, service) { }
 
 
         // GET: api/v1/odata/Tasks

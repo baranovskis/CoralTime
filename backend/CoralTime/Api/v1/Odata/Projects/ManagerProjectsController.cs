@@ -15,8 +15,8 @@ namespace CoralTime.Api.v1.Odata.Projects
     [Authorize]
     public class ManagerProjectsController : BaseODataController<ManagerProjectsController, IProjectService>
     {
-        public ManagerProjectsController(IProjectService service, IMapper mapper, IConfiguration config, ILogger<ManagerProjectsController> logger)
-            : base(logger, mapper, config, service) { }
+        public ManagerProjectsController(IProjectService service, IMapper mapper, ILogger<ManagerProjectsController> logger)
+            : base(logger, mapper, service) { }
 
         // GET api/v1/odata/ManagerProjects
         [HttpGet]
