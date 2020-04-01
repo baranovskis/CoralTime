@@ -47,7 +47,6 @@
                             [maxHeight]="formHeight - 149"
                             [(ngModel)]="issueModel"
                             (ngModelChange)="issueOnChange(issueModel)"
-                            [required]="!currentTimeEntry.id"
                             [options]="issueList">
                 </ct-select>
             </div>

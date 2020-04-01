@@ -38,10 +38,15 @@ namespace CoralTime.Common.Helpers
 
         public static void SetRangeOfLastMonthByDate(out DateTime lastMonthDateStart, out DateTime lastMonthDateEnd, DateTime day)
         {
-            SetRangeOfThisMonthByDate(out lastMonthDateStart, out lastMonthDateEnd, day);
+            //SetRangeOfThisMonthByDate(out lastMonthDateStart, out lastMonthDateEnd, day);
 
-            lastMonthDateStart = lastMonthDateStart.AddMonths(-1);
-            lastMonthDateEnd = lastMonthDateEnd.AddMonths(-1);
+            //lastMonthDateStart = lastMonthDateStart.AddMonths(-1);
+            //lastMonthDateEnd = lastMonthDateEnd.AddMonths(-1);
+
+            var date = day.AddMonths(-1);
+
+            lastMonthDateStart = new DateTime(date.Year, date.Month, 1);
+            lastMonthDateEnd = lastMonthDateStart.AddMonths(1).AddMilliseconds(-1).Date;
         }
 
         public static void SetRangeOfLastYearByDate(out DateTime lastYearDateStart, out DateTime lastYearDateEnd, DateTime day)

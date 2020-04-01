@@ -385,8 +385,9 @@ export class EntryTimeFormComponent implements OnInit, OnDestroy {
 
 	private isEstimatedTimeValid(): boolean {
 		this.setDayInfo();
-		return this.totalEstimatedTimeForDay - this.timeEntry.timeValues.timeEstimated
-			+ this.currentTimeEntry.timeValues.timeEstimated < MAX_TIMER_VALUE;
+		return true;
+		/*return this.totalEstimatedTimeForDay - this.timeEntry.timeValues.timeEstimated
+			+ this.currentTimeEntry.timeValues.timeEstimated < MAX_TIMER_VALUE;*/
 	}
 
 	private isFromToTimeValid(): boolean {

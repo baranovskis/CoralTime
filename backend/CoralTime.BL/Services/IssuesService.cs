@@ -49,6 +49,7 @@ namespace CoralTime.BL.Services
 
             var connection = GetConnection();
             var timeService = connection.CreateTimeTrackingService();
+            var issueService = connection.CreateIssuesService();
 
             // 1 minute is minimum value for youtrack
             if (time < 60)
@@ -71,6 +72,17 @@ namespace CoralTime.BL.Services
             else
             {
                 timeEntry.WorkItemId = timeService.CreateWorkItemForIssue(timeEntry.IssueId, workItem).Result;
+            }
+
+            var issue = issueService.GetIssue(timeEntry.IssueId).Result;
+
+            foreach (var field in issue.Fields)
+            {
+                if (field != null && field.Name.Equals("Estimation"))
+                {
+                    // YouTrack is counting in minutes
+                    timeEntry.TimeEstimated = field.AsInt32() * 60;
+                }
             }
         }
 
