@@ -72,6 +72,12 @@ namespace CoralTime.DAL.ConvertModelToView
                     : null;
 
             reportItemsView.Notes = reportItemsView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowNotes) ? timeEntry.Description ?? string.Empty : null;
+            
+            if (!string.IsNullOrEmpty(reportItemsView.Notes) && !string.IsNullOrEmpty(reportItemsView.IssueId))
+            {
+                reportItemsView.Notes = $"[{reportItemsView.IssueId}] {reportItemsView.Notes}";
+            }
+            
             reportItemsView.TimeValues = new TimeValuesView
             {
                 TimeFrom = reportItemsView.ShowColumnIds.Contains((int)ShowColumnModelIds.ShowStartFinish) ? (int?)timeEntry.TimeFrom : null,
