@@ -443,6 +443,17 @@ namespace CoralTime.BL.Services
             timeEntry.Description = timeEntryView.Description;
             timeEntry.IsFromToShow = timeEntryView.TimeOptions.IsFromToShow;
 
+            #region Delete work item from YouTrack, if issue id was changed.
+
+            if (timeEntry.IssueId != timeEntryView.IssueId
+                && !string.IsNullOrEmpty(timeEntry.WorkItemId))
+            {
+                _issuesService.DeleteIssue(timeEntry);
+                timeEntry.WorkItemId = string.Empty;
+            }
+
+            #endregion
+
             timeEntry.IssueId = timeEntryView.IssueId;
 
             #endregion
