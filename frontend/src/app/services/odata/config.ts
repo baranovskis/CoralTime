@@ -13,7 +13,7 @@ export class KeyConfigs {
 
 @Injectable()
 export class ODataConfiguration {
-	baseUrl: string = 'http://localhost/odata';
+	baseUrl: string = 'https://tm.l-it.gmbh/odata';
 	keys: KeyConfigs = new KeyConfigs();
 
 	getEntityUri(entityKey: string, _typeName: string): string {

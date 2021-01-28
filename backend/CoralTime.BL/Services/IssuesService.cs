@@ -39,7 +39,12 @@ namespace CoralTime.BL.Services
             var issuesService = connection.CreateIssuesService();
             var issues = issuesService.GetIssues(take: takeAmount).Result;
 
-            return issues.Select(Mapper.Map<Issue, IssueView>);
+            return issues.Select(x => new {Model = x, Id = x.Id.Split('-')})
+                .OrderByDescending(x => int.Parse(x.Id[1]))
+                .Select(x => x.Model)
+                .Select(Mapper.Map<Issue, IssueView>)
+                .ToList();
+            //return issues.Select(Mapper.Map<Issue, IssueView>);
         }
 
         public void UpdateIssue(TimeEntry timeEntry, int time)

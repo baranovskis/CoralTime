@@ -1,11 +1,11 @@
 {
     "/connect/token": {
-        "target": "http://localhost:5000",
+        "target": "https://tm.l-it.gmbh",
         "secure": false,
         "changeOrigin": true
     },
     "/api": {
-        "target": "http://localhost:5000",
+        "target": "https://tm.l-it.gmbh",
         "secure": false,
         "changeOrigin": true
     }

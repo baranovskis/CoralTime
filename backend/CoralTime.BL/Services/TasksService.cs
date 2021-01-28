@@ -69,7 +69,6 @@ namespace CoralTime.BL.Services
         public TaskTypeView Update(TaskTypeView taskTypeView)
         {
             IsTaskTypeNameHasChars(taskTypeView.Name);
-            IsNameUnique(taskTypeView);
 
             var taskType = Uow.TaskTypeRepository.GetQueryWithIncludesById(taskTypeView.Id);
             if (taskType == null)

@@ -16,7 +16,7 @@ export class IssuesService {
 		let query = this.odata
 			.Query();
 
-		query.OrderBy('id asc');
+		//query.OrderBy('id asc');
 		if (projectName) {
 			filters.push('contains(tolower(projectName),\'' + projectName.trim().toLowerCase() + '\')');
 		}
